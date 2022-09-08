@@ -60,3 +60,20 @@ example(of: "assing(to: on)") {
         .assign(to: \.data, on: obj)
         .store(in: &subscribers)
 }
+example(of: "PassThrough Subject") {
+    let publisher = PassthroughSubject<String, Never>()
+    publisher.send("Got it")
+    let subscriber = publisher.sink { recivedValue in
+     print(recivedValue)
+    }.store(in: &subscribers)
+    publisher.send("After the subscription")
+}
+
+example(of: "CurrentValue") {
+    let currentPublisher = CurrentValueSubject<Int , Never>(-1)
+    currentPublisher.send(3)
+    let subscriber = currentPublisher.sink { recivedValue in
+     print(recivedValue)
+    }.store(in: &subscribers)
+    currentPublisher.send(4)
+}
